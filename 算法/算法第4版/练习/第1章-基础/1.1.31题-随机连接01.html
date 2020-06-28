@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>随机连接</title>
+</head>
+<body>
+
+<div>
+    <canvas id="myCanvas" height="400px" width="400px"></canvas>
+</div>
+
+<script>
+    /*
+    https://zhangjia.tv/792.html
+    http://bbs.it-home.org/thread-79374-1-1.html
+    编写一段程序,从命令行接受一个整数n和double值p(0,1)作为参数,
+    在一个圆上画出大小为0.05且间距相等的n个点,然后将每对点按照
+    概率p用灰线连接.
+    解题思路:
+    1,输入参数n和p
+    2,新建画布,
+    3,在画布上画半径为 r = 160 的圆.
+    4,在圆上画n个点
+    5,按概率绘制直线
+     */
+    // 输入n个点
+    var n=6
+    // 输入概率 p
+    var p = 0.6;
+    
+    // 1,新建画布
+    var canvas=document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    //获取canvas的宽高
+    var width=ctx.canvas.width;
+    var height=ctx.canvas.height;
+    //定义原点的中心
+    var r=width/2;
+    var rem=width/200;
+    // 全部画出
+    draw();
+    // 全部画出函数
+    function draw() {
+        drawBackground();
+        drawLineByProbability()
+    }
+    // 按照概率事件绘制直线
+    function drawLineByProbability() {
+        // 获取点集;
+        var points = getPoints(n,r-2*rem);
+        for(var i=0;i<n;i++){
+            for(var j=0;j<n;j++){
+                if(bernoulli(p))
+                     drawLine(points[i],points[j])
+            }
+        }
+    }
+    // 绘制直线
+    function drawLine(p1,p2) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.lineWidth=0.5*rem;
+        ctx.moveTo(p1.x,p1.y);
+        ctx.lineTo(p2.x,p2.y);
+        ctx.stroke()
+    }
+    
+    //画出canvas背景
+    function drawBackground() {
+        ctx.save();
+        //默认的原点在左上角，要移到中心
+        ctx.translate(r,r);
+        //起始一条路径
+        ctx.beginPath();
+        //定义线条的宽度
+        ctx.lineWidth=0.5*rem;
+        //画圆,由于原点已经移到了中心，所以圆心坐标为0，0,false是顺时针画
+        ctx.arc(0,0,r-2*rem,0,2*Math.PI,false);
+        //定义路径怎么画
+        ctx.stroke();
+        
+        // 画点
+        // 获取点集
+        var points = getPoints(n,r-2*rem);
+        // console.log(points)
+        for(var i=0;i<n;i++){
+            ctx.beginPath()
+            ctx.fillStyle="red";
+            
+            var x = points[i].x;
+            var y = points[i].y;
+            // console.log(x,y)
+            ctx.arc(x,y,2*rem,0,2*Math.PI,false);
+            ctx.fill();
+        }
+    }
+    // 求n个点坐标,点心都在圆上
+    function getPoints(n,r) {
+        // 用于存储点的数组
+        var points = [];
+        // 每个点的角度
+        var angle = 360/n;
+        var x = 0, y = 0;
+        for(var i = 0; i< n; i++){
+            // 求出每个点的x,y坐标
+            x = r *Math.cos(i*angle2Radian(angle));
+            y = r *Math.sin(i*angle2Radian(angle));
+            points[i]=new Point(x,y)
+        }
+        return points;
+    }
+    // 点类
+    function Point(x,y) {
+        if(isNaN(x) || isNaN(y))
+            throw new TypeError("数字错误,坐标必须是数字");
+        this.x = x;
+        this.y = y;
+    }
+    // 角度转弧度函数
+    function angle2Radian(a) {
+        return a * Math.PI/180
+    }
+    // 弧度转角度
+    function radian2Angle(r) {
+        return r * 180/Math.PI
+    }
+    // 返回真的概率为p
+    function bernoulli(p) {
+        if (!(p >= 0.0 && p <= 1.0))
+            throw new Error("概率p必须在[0,1)之间 " + p);
+        return Math.random()<p;
+    }
+    
+</script>
+<style>
+    div{
+        text-align: center;
+        margin: 50px;
+    }
+    #myCanvas{
+        border: 1px solid #cccccc;
+    }
+</style>
+</body>
+</html>

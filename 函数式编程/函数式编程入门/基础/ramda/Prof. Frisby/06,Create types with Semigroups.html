@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>06,Create types with Semigroups</title>
+</head>
+<body>
+<script>
+    const Sum = x => ({
+        // 相当于 x(属性名称为'x', 有一个名为x的属性): x.
+        // 后面一个x是值  
+        x, // 两个容器数据需要处理的时候才用到这个属性
+        // 另外一个有x属性的对象,值是y.
+        // 这2个值相加.
+        concat: ({x: y}) => Sum(x + y),
+        inspect: _ => `Sum(${x})`,
+        fold: f => f(x)
+    })
+    console.log(Sum(1).concat(Sum(2)).inspect())
+    console.log(Sum(1).concat(Sum(2)).fold(x => x))
+    
+    const All = x => ({
+        x,
+        // o - other
+        // concat: o => Sum(x + o),
+        concat: ({x: y}) => All(x && y),
+        inspect: _ => `All(${x})`,
+        fold : f => f(x)
+    })
+    // 全部为真才为真
+    console.log(All(false).concat(All(true)).fold(x => x))
+    
+    const First = x => ({
+        x,
+        // 不管后面输入多少参数, _ 都将其舍弃掉了
+        concat: _ => First(x),
+        inspect: _ => `First(${x})`
+    })
+    
+    console.log(
+        First('blah')
+            .concat(First('ice cream'))
+            .concat(First('meta programming'))
+            .inspect()
+    )
+    
+</script>
+</body>
+</html>

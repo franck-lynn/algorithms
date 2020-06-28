@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1.2.3平面上的点API</title>
+</head>
+<body>
+<div>
+    <canvas id="my-canvas" width="300px" height="300px"></canvas>
+</div>
+<script src="1.2.3平面上的点API.js"></script>
+<script>
+    var canvas = document.getElementById("my-canvas");
+    var ctx = canvas.getContext('2d');
+    var width = ctx.canvas.width;
+    var height = ctx.canvas.height;
+    var rem = width/2
+    var r =0.01*rem
+    
+    
+    var n = 1000;
+    // 生成点
+    var points = [];
+    for(var i = 0;i<n;i++){
+        var x = Math.random()*width;
+        var y = Math.random()*height;
+        points[i] = new Point2D(x,y);
+        points[i].draw();
+    }
+    
+</script>
+
+<style>
+    #my-canvas {
+        border: 1px dashed #002f2f;
+    }
+</style>
+</body>
+</html>

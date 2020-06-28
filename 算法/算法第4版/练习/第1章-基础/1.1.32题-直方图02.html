@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>直方图</title>
+</head>
+<body>
+<div>
+    <input id="num" value="10" placeholder="请输入数据段数n">
+    <input id="start" value="1" placeholder="数据低位">
+    <input id="end" value="10" placeholder="数据高位">
+    <button id="submit" onclick="submit()">提交数据</button>
+</div>
+<div>
+    <canvas id="histogram" width="500px" height="300px"></canvas>
+</div>
+<script>
+    /*
+    假设标准输入流中含有一系列double值,
+    编写一段程序,从命令行接收一个整数n.
+    和两个double值l和r,将(l,r)分为n段,
+    并使用StdDraw画出输入流中的值落入每段
+    数量的直方图.
+    分析:
+    l,r是横坐标.纵坐标是输入流中的值.
+    范围:(r-l)/n *(i-1)...(r-l)/n *i
+    
+    解题思路:
+    1,新建画布.histogram
+     */
+    var n=16,l=0,r=10;
+    
+    function submit() {
+        return  document.getElementsByTagName("input")
+    }
+    
+    
+    
+    var canvas=document.getElementById("histogram");
+    var ctx = canvas.getContext("2d");
+    //获取canvas的宽高
+    var width = ctx.canvas.width;
+    var height = ctx.canvas.height;
+    var offset=4;
+    var rem = width/200
+    // 重新定义原点,x坐标向右移动offset距离,
+    // y坐标总长度-offset就是要移动的距离.
+    ctx.translate(offset,height-offset);
+    // 旋转坐标180°.
+    ctx.rotate(angle2Radian(180));
+    // x坐标轴反向
+    ctx.scale(-1,1);
+    
+    //设置x,y坐标轴绘制的长度
+    var w = width-2*offset;
+    var h = height-2*offset
+    // 画两坐标轴
+    var p1=new Point(0,0);
+    var p2=new Point(w,0);
+    var p3=new Point(0,h);
+    drawLine(p1,p2);
+    drawLine(p1,p3);
+
+    // 获取一批随机数
+    var arr = uniforms(1000,1,n);
+    var counts=countsInRange(arr,n,1,n);
+    // 绘制矩形,起始位置改为一边的中点了.纵坐标是h-y=0.
+    // 矩形一边中点坐标(x,0,w,h)
+    // x是确定的,可计算出.0是固定的,w可计算出,h是落在此
+    // 区间的随机数数量
+    
+    // 求直方图宽度,并画出
+    // var wHistogram = w/(2*n);
+    for(var i=0;i<n;i++){
+        drawRectangle((w/(n)-rem)*(i+1),0,w/(2*n),2*counts[i]);
+    }
+    
+    
+    // console.log(arr)
+    // 随机数排序,在(r-l)/n*i和(r-l)/n*(i+1)之间时,随机数数量++
+    function countsInRange(a,n,l,r) {
+        var counts = [];
+        for(var i=0;i< n;i++){
+            var count=0;
+            var min = (r-l)/n*(i+1);
+            var max = (r-l)/n*(i+2);
+            // console.log("max,min",max,min);
+            for(var j=0;j<a.length;j++){
+                if(a[j]<max && a[j]>=min){
+                    count++;
+                }
+            }
+            counts.push(count)
+        }
+        return counts;
+    }
+    // 画矩形
+    function drawRectangle(x,y,w,h) {
+        ctx.beginPath();
+        ctx.lineWidth=1*rem;
+        ctx.strokeStyle=getRandomColor();
+        // 已知宽高,和矩形窄边中点值.求左上角x,y值.
+        ctx.rect(x-w/2,0,w,h);
+        ctx.fill();
+        ctx.fillStyle=getRandomColor();
+        ctx.stroke();
+    }
+    
+    // 画线函数
+    function drawLine(p1,p2) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.lineWidth=0.5*rem;
+        ctx.strokeStyle="red"
+        ctx.moveTo(p1.x,p1.y);
+        ctx.lineTo(p2.x,p2.y)
+        ctx.stroke();
+        ctx.restore()
+    }
+    //点构造函数
+    function Point(x,y) {
+        this.x=x;
+        this.y=y;
+    }
+
+
+    // 角度转弧度函数
+    function angle2Radian(a) {
+        return a * Math.PI/180
+    }
+    // 弧度转角度
+    function radian2Angle(r) {
+        return r * 180/Math.PI
+    }
+    //随机颜色
+    function getRandomColor() {
+        return '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).substr(-6);
+    }
+    
+    // 返回n个l,r之间的值
+    function uniforms(n,l,r) {
+        var a = [];
+        for(var i=0;i<n;i++){
+            a.push(uniform(l,r))
+        }
+        return a;
+    }
+    
+    // 随机返回一个值l,r之间的值
+    function uniform(l,r) {
+        return l+Math.random()*(r-l)
+    }
+    
+    // 打乱顺序
+    function shuffle(a) {
+        var n = a.length;
+        for(var i=0;i<n;i++){
+            //将a[i]和a[i...n-1]中任一元素交换.
+            var r=i+Math.floor(Math.random()*(n-1))
+            var temp = a[i];
+            a[i]=a[r];
+            a[r]=temp;
+        }
+    }
+</script>
+<style>
+    div{
+        text-align: center;
+        margin: 50px;
+    }
+    #histogram{
+        border: 1px solid #cccccc;
+    }
+</style>
+
+</body>
+</html>

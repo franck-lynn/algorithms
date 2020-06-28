@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IO</title>
+</head>
+<body>
+<div id="myDiv">I am some inner html</div>
+<script src="https://cdn.bootcss.com/ramda/0.25.0/ramda.js"></script>
+
+<script>
+    class IO{
+        constructor(f){
+            this.$value = f
+        }
+        static of(x){
+            return new IO(() => x)
+        }
+        map(f){
+            // console.log(this.$value())
+            // console.log(f)
+            // 先执行 this.$value这个函数,再执行f函数,返回的还是一个函数
+            return new IO(R.compose(f, this.$value))
+        }
+    }
+    // 使用输入输出IO函子
+    var io_window = IO.of(window)
+    // console.log(io_window)
+    
+    /*
+    console.log(
+        // io_window 首先输入的是一个window对象, 转成函数 
+        // 执行map时,先执行这个返回,返回window, 
+        // 再执行f, 从window中取出 innerWidth,
+        // 有放回了这个瓶子,还又用函数包裹了一下
+        io_window.map(win => win.innerWidth) // 返回的是一个容器
+    )
+    */
+    
+    
+    /*
+    var winInnerWidth = io_window.map(win => win.innerWidth)
+    var $value = winInnerWidth.$value
+    // 这样就取出了包裹的函数值
+    console.log($value())
+    
+    var urlArr = io_window
+        .map(R.prop('location'))
+        .map(R.prop('href'))
+        .map(R.split('/'))
+    console.log(urlArr.$value())
+    */
+    // 输入选择器,返回一个选择的元素,放在瓶子里面
+    var $ = selector => IO.of(document.querySelectorAll(selector)[0])
+    
+    var html = $('#myDiv').map(
+        // div => div.innerHTML
+        function (div) {
+            return div.innerHTML
+        }
+    )
+    console.log(html.$value())
+    
+    
+    
+    
+</script>
+</body>
+</html>

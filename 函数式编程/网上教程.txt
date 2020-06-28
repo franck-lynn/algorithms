@@ -1,0 +1,77 @@
+http://www.ruanyifeng.com/blog/2017/03/pointfree.html
+http://www.ruanyifeng.com/blog/2017/03/ramda.html
+
+http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
+http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
+http://jiyinyiyong.github.io/monads-in-pictures/
+
+
+轻量级的函数编程 原版地址:
+https://github.com/getify/Functional-Light-JS/tree/master/manuscript
+第1章
+https://blog.csdn.net/lszy16/article/details/77941725
+第2章
+https://juejin.im/post/599e4beb5188252428610762
+第3章
+https://juejin.im/post/59a277f551882524241a6c38
+第4章
+https://juejin.im/post/59a62f3d6fb9a0248363fd9d
+第5章 减少副作用
+https://juejin.im/post/59ab85d0518825243d1f2329
+翻译连载 | JavaScript轻量级函数式编程-第6章:值的不可变性 |《你不知道的JS》姊妹篇
+https://juejin.im/post/59af907a5188252427260dee
+翻译连载 | JavaScript轻量级函数式编程-第7章: 闭包vs对象 |《你不知道的JS》姊妹篇 
+https://segmentfault.com/a/1190000011118816
+翻译连载 | JavaScript轻量级函数式编程-第7章: 闭包vs对象 |《你不知道的JS》姊妹篇
+https://juejin.im/post/59b66943f265da065e3207a4
+
+翻译连载 | JavaScript轻量级函数式编程-第 8 章：列表操作 |《你不知道的JS》姊妹篇
+https://juejin.im/post/59bb6b1bf265da064261b121
+
+翻译连载 | 第 9 章：递归（上）－《JavaScript轻量级函数式编程》 |《你不知道的JS》姊妹篇
+https://juejin.im/post/59c1d91d6fb9a00a53275f79
+翻译连载 | 第 9 章：递归（下）－《JavaScript轻量级函数式编程》 |《你不知道的JS》姊妹篇
+https://juejin.im/post/59c87fb46fb9a00a437b1a2e
+
+第 10 章：异步的函数式（上
+https://www.jianshu.com/p/2db4a45802d7
+
+
+连载—JavaScript轻量级函数式编程—第10章：异步的函数式（下
+https://www.aliyun.com/jiaocheng/772156.html
+
+
+翻译连载 | 第 11 章：融会贯通 －《JavaScript轻量级函数式编程》 |《你不知道的JS》姊妹篇
+https://cloud.tencent.com/developer/article/1172025
+
+
+
+https://www.youtube.com/watch?v=BMUiFMZr7vk&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84
+
+https://www.youtube.com/results?search_query=functor
+
+https://github.com/MostlyAdequate/mostly-adequate-guide
+
+http://www.ruanyifeng.com/blog/2017/03/pointfree.html
+
+http://www.ruanyifeng.com/blog/2017/02/fp-tutorial.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

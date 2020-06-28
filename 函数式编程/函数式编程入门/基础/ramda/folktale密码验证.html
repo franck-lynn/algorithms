@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>folktale密码验证</title>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/folktale/2.0.1/folktale.js"></script>
+
+<div id="app-1">
+    <input  placeholder="请输入密码" v-model="password" type="password" @change="checkPassword">
+    <span id="chkPwd">{{pwdMsg}}</span>
+</div>
+<script>
+    const {Success, Failure} = folktale.validation
+    
+    const isPasswordLongEnough = password =>
+        password.length > 6 ? Success(password)
+            : Failure(["密码要大于6位字符"])
+
+
+    const isPasswordStrongEnough = password =>
+        /[\W]/.test(password) ? Success(password)
+            : Failure(['密码要包含特殊字符'])
+
+
+    // 验证密码;                                              
+    const isPasswordValid = password =>
+        Success().concat(isPasswordLongEnough(password))
+            .concat(isPasswordStrongEnough(password))
+            .map(_ => password);
+    
+    
+    new Vue({
+        el: '#app-1',
+        data: {
+            password: '',
+            pwdMsg: ''
+        }, 
+        methods:{
+            checkPassword(){
+                console.log("输入的密码是:", this.password)
+                this.pwdMsg = isPasswordValid(this.password).getOrElse()
+            }
+        }
+    })
+
+    
+</script>
+</body>
+</html>

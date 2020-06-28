@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gleb Bahmutov PhD</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/folktale/2.0.1/folktale.js"></script>
+</head>
+<body>
+<script>
+    // Difference between a Promise and a Task
+    // https://glebbahmutov.com/blog/difference-between-promise-and-task/
+    // jquery 要在 document 环境中
+    const {getJSON, post} = jQuery;
+    
+    const {task} = folktale.concurrency.task
+
+    const Http = {
+        get(url){
+            return task(resolver => getJSON(url)
+                .done(res => resolver.resolve(res)))
+        },
+        post(url, params){
+            return task(resolver => post(url, JSON.stringify(params))
+                .done(res => resolver.resolve(res)))
+        }
+    }
+
+    const URL = `https://jsonplaceholder.typicode.com/todos`
+
+    Http.get(URL).run().listen({
+        onCancelled: () => '任务取消',
+        onRejected: reason => 'task was rejected',
+        onResolved: value => console.log("任务正常执行", value)
+    })
+</script>
+</body>
+</html>
